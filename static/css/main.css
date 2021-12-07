@@ -1,0 +1,19 @@
+.navbar-nav .nav-link {
+    color: #ffffff !important;
+}
+
+img.pfp {
+    max-width: 50px;
+}
+
+.form-register {
+    width: 100%;
+    max-width: 660px;
+    margin: auto;
+}
+
+.form-login {
+    width: 100%;
+    max-width: 660px;
+    margin: auto;
+}
