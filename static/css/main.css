@@ -7,7 +7,8 @@ body {
 }
 
 img.pfp {
-    max-width: 50px;
+    max-height: 64px;
+    max-width: 64px;
 }
 
 .form-register {
@@ -26,4 +27,21 @@ img.pfp {
     width: 100%;
     max-width: 660px;
     margin: auto;
+}
+
+.not-found {
+    width: 100%;
+    max-width: 660px;
+    margin: auto;
+}
+
+/* .post {
+    width: 100%;
+    max-width: 660px;
+    margin: auto;
+} */
+
+.comment {
+    width: 100%;
+    max-width: 660px;
 }

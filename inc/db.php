@@ -113,4 +113,40 @@ class Database {
       return $last_id;
     }
   }
+
+  public function create_comment($contents, $creator, $post, $image=0) {
+    if ($image != 0) {
+      $stmt = $this->conn->prepare("INSERT INTO kommentar(innehåll, skapare, inlägg, bild) VALUES (?, ?, ?, ?)");
+      $stmt->bind_param("siii", $contents, $creator, $post, $image);
+      $stmt->execute();
+      $stmt->close();
+      $last_id = $this->conn->insert_id;
+      return $last_id;
+    } elseif ($image == 0) {
+      $stmt = $this->conn->prepare("INSERT INTO kommentar(innehåll, skapare, inlägg) VALUES (?, ?, ?)");
+      $stmt->bind_param("sii", $contents, $creator, $post);
+      $stmt->execute();
+      $stmt->close();
+      $last_id = $this->conn->insert_id;
+      return $last_id;
+    }
+  }
+
+  public function get_post($id) {
+    $stmt = $this->conn->prepare("SELECT * FROM inlägg WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return $result;
+  }
+
+  public function get_comments_by_post($id) {
+    $stmt = $this->conn->prepare("SELECT * FROM kommentar WHERE inlägg = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return $result;
+  }
 }
