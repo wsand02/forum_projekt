@@ -86,4 +86,31 @@ class Database {
     $last_id = $this->conn->insert_id;
     return $last_id;
   }
+
+  public function create_image($bildadress) {
+    $stmt = $this->conn->prepare("INSERT INTO bild(bildadress) VALUES (?)");
+    $stmt->bind_param("s", $bildadress);
+    $stmt->execute();
+    $stmt->close();
+    $last_id = $this->conn->insert_id;
+    return $last_id;
+  }
+
+  public function create_post($title, $contents, $creator, $category, $image=0) {
+    if ($image != 0) {
+      $stmt = $this->conn->prepare("INSERT INTO inlägg(titel, innehåll, skapare, kategori, bild) VALUES (?, ?, ?, ?, ?)");
+      $stmt->bind_param("ssiii", $title, $contents, $creator, $category, $image);
+      $stmt->execute();
+      $stmt->close();
+      $last_id = $this->conn->insert_id;
+      return $last_id;
+    } elseif ($image == 0) {
+      $stmt = $this->conn->prepare("INSERT INTO inlägg(titel, innehåll, skapare, kategori) VALUES (?, ?, ?, ?)");
+      $stmt->bind_param("ssii", $title, $contents, $creator, $category);
+      $stmt->execute();
+      $stmt->close();
+      $last_id = $this->conn->insert_id;
+      return $last_id;
+    }
+  }
 }
