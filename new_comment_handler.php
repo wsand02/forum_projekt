@@ -11,8 +11,12 @@ if (!$logged_in) {
 if (isset($_SERVER["CONTENT_LENGTH"])) {
   if ($_SERVER["CONTENT_LENGTH"] > ((int)ini_get('post_max_size') * 1024 * 1024)) {
     $_SESSION["cf_error"] = "Filen du försökte ladda upp var ALLDELES FÖR STOR!";
-    header("Location: new_comment.php");
-    // Kan inte stoppa in id för content length är full och orkar inte använda sessions
+    if (isset($_SESSION["cf_id"])) {
+      header("Location: new_comment.php?id=" . $_SESSION["cf_id"]);
+      unset($_SESSION["cf_id"]); 
+    } else {
+      header("Location: new_comment.php");
+    }
     die();
   }
 }
@@ -25,8 +29,6 @@ $failed = false;
 $error = "";
 
 $will_upload = false;
-$image_has_size = false;
-$image_is_image = false;
 $image_filext = "";
 $image_id = 0;
 
@@ -40,21 +42,15 @@ if (empty($contents)) {
   $failed = true;
 }
 
-if ($image["tmp_name"] != "") {
-  if (getimagesize($image["tmp_name"])) {
-    $image_has_size = true;
-  }
-}
-
-if ($image_has_size) {
+if ($image["name"] != "") {
   $image_mime_type = mime_content_type($image["tmp_name"]);
-  if ($image_mime_type == "image/png") {
+  if ($image_mime_type === "image/png") {
     $image_filext = ".png";
     $will_upload = true;
-  } elseif ($image_mime_type == "image/jpeg") {
+  } elseif ($image_mime_type === "image/jpeg") {
     $image_filext = ".jpeg";
     $will_upload = true;
-  } elseif ($image_mime_type == "image/gif") {
+  } elseif ($image_mime_type === "image/gif") {
     $image_filext = ".gif";
     $will_upload = true;
   } else {
@@ -86,4 +82,5 @@ if ($will_upload) {
 
 $new_id = $db->create_comment($contents, $_SESSION["uid"], $post, $image_id);
 header("Location: post.php?id=$post");
+unset($_SESSION["cf_id"]); 
 die();

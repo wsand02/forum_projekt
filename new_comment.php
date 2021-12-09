@@ -24,6 +24,7 @@ if($result->num_rows > 0) {
   header("Location: index.php");
   die();
 }
+$_SESSION["cf_id"] = $p_id;
 ?>
 <div class="form-post">
 <h1>Kommentera</h1><hr>
