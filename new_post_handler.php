@@ -25,8 +25,6 @@ $failed = false;
 $error = "";
 
 $will_upload = false;
-$image_has_size = false;
-$image_is_image = false;
 $image_filext = "";
 $image_id = 0;
 
@@ -45,15 +43,7 @@ if (empty($contents)) {
   $failed = true;
 }
 
-if ($image["tmp_name"] != "") {
-  if (getimagesize($image["tmp_name"])) {
-    $image_has_size = true;
-  }
-}
-
-// Jag orkar inte fixa de där. Den laddar iaf inte upp något konstigt.
-
-if ($image_has_size) {
+if ($image["name"] != "") {
   $image_mime_type = mime_content_type($image["tmp_name"]);
   if ($image_mime_type === "image/png") {
     $image_filext = ".png";
